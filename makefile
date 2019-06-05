@@ -1,0 +1,14 @@
+.PHONY: all clean
+all: client server
+
+Chat.cpp Chat.h:
+	slice2cpp Chat.ice
+
+client: Client.cpp Chat.cpp TerminalLog.cpp UserI.cpp GroupServerManagerI.cpp GroupServerI.cpp Userable.cpp
+	g++ -I. Client.cpp Chat.cpp TerminalLog.cpp UserI.cpp GroupServerManagerI.cpp GroupServerI.cpp Userable.cpp -lIce -lpthread -o client
+
+server: Server.cpp Chat.cpp TerminalLog.cpp GroupServerManagerI.cpp GroupServerI.cpp CoreServerI.cpp Userable.cpp
+	g++ -I. Server.cpp Chat.cpp TerminalLog.cpp GroupServerManagerI.cpp GroupServerI.cpp CoreServerI.cpp Userable.cpp -lIce  -lpthread -o server
+
+clean:
+	-rm Chat.cpp Chat.h client server
